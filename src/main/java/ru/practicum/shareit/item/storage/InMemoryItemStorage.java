@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.storage;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.AccessDeniedException;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class InMemoryItemStorage implements ItemStorage {
@@ -26,6 +28,7 @@ public class InMemoryItemStorage implements ItemStorage {
 
     @Override
     public Item createItem(NewItemRequest newItemRequest, Integer userId) {
+        log.debug("Мы получили на вход - " + newItemRequest);
         Item item = ItemMapper.mapToItem(newItemRequest);
 
         Long itemId = getNextId();
@@ -37,6 +40,8 @@ public class InMemoryItemStorage implements ItemStorage {
         item.setOwnerId(userId);
 
         items.put(itemId, item);
+
+        log.debug("Мы создаем такой обьект - " + item);
 
         return item;
     }
@@ -118,10 +123,6 @@ public class InMemoryItemStorage implements ItemStorage {
 
     @Override
     public Collection<Item> searchItem(String textSearch, Integer userId) {
-        if (!userStorage.existsById(userId)) {
-            throw new NotFoundException(USER_NOT_FOUND_EXCEPTION);
-        }
-
         if (textSearch.isBlank()) {
             return List.of();
         }
