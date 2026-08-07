@@ -15,4 +15,16 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleObjectDublicateData(final DuplicateDataException e) {
         return Map.of("Ошибка валидации", e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleObjectNotFound(final NotFoundException e) {
+        return Map.of("Ошибка валидации", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Map<String, String> handleObjectAccessDenied(final AccessDeniedException e) {
+        return Map.of("Ошибка доступа", e.getMessage());
+    }
 }

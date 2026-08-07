@@ -81,9 +81,19 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public UserDto getUser(Integer userId) {
-        User user = users.get(userId);
+        User user = getUserModel(userId);
 
         return UserMapper.mapToUserDto(user);
+    }
+
+    @Override
+    public User getUserModel(Integer userId) {
+        return users.get(userId);
+    }
+
+    @Override
+    public boolean existsById(Integer userId) {
+        return users.containsKey(userId);
     }
 
     // Генерация идетификатора пользователя

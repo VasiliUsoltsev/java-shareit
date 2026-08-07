@@ -1,15 +1,9 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 
-/**
- * TODO Sprint add-controllers.
- */
-@Setter
 @Getter
-public class ItemDto {
-    Long id;
+public class UpdateItemPatchRequest {
     String name;
     String description;
     Boolean available;
