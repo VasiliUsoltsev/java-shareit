@@ -123,14 +123,20 @@ public class InMemoryItemStorage implements ItemStorage {
 
     @Override
     public Collection<Item> searchItem(String textSearch, Integer userId) {
+        if (!userStorage.existsById(userId)) {
+            throw new NotFoundException(USER_NOT_FOUND_EXCEPTION);
+        }
+
         if (textSearch.isBlank()) {
             return List.of();
         }
 
         return items.values()
                 .stream()
-                .filter(item -> item.getAvailable().equals(true)
-                        && (item.getName().contains(textSearch) || item.getDescription().contains(textSearch)))
+                .filter(Item::getAvailable)
+                .filter(item ->
+                        item.getName().toLowerCase().contains(textSearch.toLowerCase()) ||
+                                item.getDescription().toLowerCase().contains(textSearch.toLowerCase()))
                 .toList();
     }
 
