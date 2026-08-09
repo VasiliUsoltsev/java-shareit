@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class UpdateItemPatchRequest {
-    String name;
-    String description;
-    Boolean available;
+    private String name;
+    private String description;
+    private Boolean available;
 }

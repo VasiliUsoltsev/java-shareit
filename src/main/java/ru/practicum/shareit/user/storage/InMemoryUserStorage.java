@@ -7,7 +7,7 @@ import ru.practicum.shareit.exception.DuplicateDataException;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dto.NewUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserPatchRequest;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserResponse;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.Collection;
@@ -22,7 +22,7 @@ public class InMemoryUserStorage implements UserStorage {
     private static final String DUBLICATE_EMAIL_EXCEPTION = "Пользователь с таким email уже существует";
 
     @Override
-    public UserDto createUser(NewUserRequest newUser) {
+    public UserResponse createUser(NewUserRequest newUser) {
         User user = UserMapper.mapToUser(newUser);
 
         log.debug("Новый пользователь {}", user);
@@ -43,7 +43,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public UserDto updateUser(Integer userId, UpdateUserPatchRequest updateUserPatchRequest) {
+    public UserResponse updateUser(Integer userId, UpdateUserPatchRequest updateUserPatchRequest) {
         User updateUser = UserMapper.mapToUser(updateUserPatchRequest);
 
         User oldUser = users.get(userId);
@@ -72,7 +72,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Collection<UserDto> getAll() {
+    public Collection<UserResponse> getAll() {
         return users.values()
                 .stream()
                 .map(UserMapper::mapToUserDto)
@@ -80,7 +80,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public UserDto getUser(Integer userId) {
+    public UserResponse getUser(Integer userId) {
         User user = getUserModel(userId);
 
         return UserMapper.mapToUserDto(user);

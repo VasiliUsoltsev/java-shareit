@@ -2,22 +2,22 @@ package ru.practicum.shareit.item;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemResponse;
 import ru.practicum.shareit.item.dto.NewItemRequest;
 import ru.practicum.shareit.item.dto.UpdateItemPatchRequest;
 import ru.practicum.shareit.item.model.Item;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemMapper {
-    public static ItemDto mapToItemDto(Item item) {
-        ItemDto itemDto = new ItemDto();
+    public static ItemResponse mapToItemResponse(Item item) {
+        ItemResponse itemResponse = new ItemResponse();
 
-        itemDto.setId(item.getId());
-        itemDto.setName(item.getName());
-        itemDto.setDescription(item.getDescription());
-        itemDto.setAvailable(item.getAvailable());
+        itemResponse.setId(item.getId());
+        itemResponse.setName(item.getName());
+        itemResponse.setDescription(item.getDescription());
+        itemResponse.setAvailable(item.getAvailable());
 
-        return itemDto;
+        return itemResponse;
     }
 
     public static Item mapToItem(NewItemRequest newItemRequest) {

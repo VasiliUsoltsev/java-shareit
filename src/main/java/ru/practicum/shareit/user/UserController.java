@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.NewUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserPatchRequest;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserResponse;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
@@ -21,25 +21,25 @@ public class UserController {
     private final UserStorage userStorage;
 
     @GetMapping
-    public Collection<UserDto> getAll() {
+    public Collection<UserResponse> getAll() {
         return userStorage.getAll();
     }
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUser(@PathVariable Integer userId) {
+    public UserResponse getUser(@PathVariable Integer userId) {
         return userStorage.getUser(userId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@Valid @RequestBody NewUserRequest newUser) {
+    public UserResponse create(@Valid @RequestBody NewUserRequest newUser) {
         return userStorage.createUser(newUser);
     }
 
     @PatchMapping("/{userId}")
-    public UserDto update(@Valid @RequestBody UpdateUserPatchRequest updateUser,
-                          @PathVariable Integer userId
+    public UserResponse update(@Valid @RequestBody UpdateUserPatchRequest updateUser,
+                               @PathVariable Integer userId
     ) {
         return userStorage.updateUser(userId, updateUser);
     }

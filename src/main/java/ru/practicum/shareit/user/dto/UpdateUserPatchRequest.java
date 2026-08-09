@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UpdateUserPatchRequest {
-    String name;
+    private String name;
     @Email(message = "Email пользователя некорректный")
-    String email;
+    private String email;
 }

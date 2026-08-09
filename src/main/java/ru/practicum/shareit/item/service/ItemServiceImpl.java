@@ -3,7 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.ItemMapper;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemResponse;
 import ru.practicum.shareit.item.dto.NewItemRequest;
 import ru.practicum.shareit.item.dto.UpdateItemPatchRequest;
 import ru.practicum.shareit.item.model.Item;
@@ -17,40 +17,40 @@ public class ItemServiceImpl implements ItemService {
     private final ItemStorage itemStorage;
 
     @Override
-    public Collection<ItemDto> getAll(Integer userId) {
+    public Collection<ItemResponse> getAll(Integer userId) {
         return itemStorage.getAll(userId)
                 .stream()
-                .map(ItemMapper::mapToItemDto)
+                .map(ItemMapper::mapToItemResponse)
                 .toList();
     }
 
     @Override
-    public ItemDto getItem(Long itemId) {
+    public ItemResponse getItem(Long itemId) {
         Item item = itemStorage.getItem(itemId);
 
-        return ItemMapper.mapToItemDto(item);
+        return ItemMapper.mapToItemResponse(item);
     }
 
     @Override
-    public Collection<ItemDto> searchItem(String text, Integer userId) {
+    public Collection<ItemResponse> searchItem(String text, Integer userId) {
         return itemStorage.searchItem(text, userId)
                 .stream()
-                .map(ItemMapper::mapToItemDto)
+                .map(ItemMapper::mapToItemResponse)
                 .toList();
     }
 
     @Override
-    public ItemDto createItem(NewItemRequest newItem, Integer userId) {
+    public ItemResponse createItem(NewItemRequest newItem, Integer userId) {
         Item item = itemStorage.createItem(newItem, userId);
 
-        return ItemMapper.mapToItemDto(item);
+        return ItemMapper.mapToItemResponse(item);
     }
 
     @Override
-    public ItemDto updateItem(Long itemId, UpdateItemPatchRequest updateItem, Integer userId) {
+    public ItemResponse updateItem(Long itemId, UpdateItemPatchRequest updateItem, Integer userId) {
         Item item = itemStorage.updateItem(itemId, updateItem, userId);
 
-        return ItemMapper.mapToItemDto(item);
+        return ItemMapper.mapToItemResponse(item);
     }
 
     @Override

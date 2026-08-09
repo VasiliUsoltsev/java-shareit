@@ -9,11 +9,11 @@ import java.util.List;
  */
 @Data
 public class Item {
-    Long id;
-    String name;
-    String description;
-    Boolean available;
-    Integer ownerId;
-    Integer request;
-    List<Feedback> feedbacks;
+    private Long id;
+    private String name;
+    private String description;
+    private Boolean available;
+    private Integer ownerId;
+    private Integer request;
+    private List<Feedback> feedbacks;
 }

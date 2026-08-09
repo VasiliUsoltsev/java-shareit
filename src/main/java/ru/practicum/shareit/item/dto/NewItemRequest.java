@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class NewItemRequest {
     @NotBlank
-    String name;
+    private String name;
     @NotBlank
-    String description;
+    private String description;
     @NotNull
-    Boolean available;
-    Integer ownerId;
+    private Boolean available;
+    private Integer ownerId;
 }

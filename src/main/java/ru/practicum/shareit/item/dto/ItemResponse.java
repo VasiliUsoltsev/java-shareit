@@ -8,9 +8,9 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class ItemDto {
-    Long id;
-    String name;
-    String description;
-    Boolean available;
+public class ItemResponse {
+    private Long id;
+    private String name;
+    private String description;
+    private Boolean available;
 }
