@@ -52,8 +52,8 @@ public class BookingServiceImpl implements BookingService {
 
         // Проверка корректности переданных дат
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = booking.getStart().minus(Duration.ofSeconds(5));
-        LocalDateTime end = booking.getEnd().minus(Duration.ofSeconds(5));
+        LocalDateTime start = booking.getStart();
+        LocalDateTime end = booking.getEnd();
 
         if (start.isBefore(now) || end.isBefore(now)) {
             throw new ValidationException(BOOKING_DATE_START_OR_END_IS_BEFORE_NOW_EXCEPTION);
