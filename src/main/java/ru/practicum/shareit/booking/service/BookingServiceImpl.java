@@ -21,7 +21,6 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 import ru.practicum.shareit.user.storage.UserRepository;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
