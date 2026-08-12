@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.storage;
+package ru.practicum.shareit.user.service;
 
 import ru.practicum.shareit.user.dto.NewUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserPatchRequest;
@@ -7,7 +7,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.Collection;
 
-public interface UserStorage {
+public interface UserService {
     public UserResponse createUser(NewUserRequest newUser);
 
     public UserResponse updateUser(Long userId, UpdateUserPatchRequest updateUserPatchRequest);

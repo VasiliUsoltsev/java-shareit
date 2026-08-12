@@ -5,13 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.user.dto.NewUserRequest;
 import ru.practicum.shareit.user.dto.UpdateUserPatchRequest;
+import ru.practicum.shareit.user.dto.UserBookingResponse;
 import ru.practicum.shareit.user.dto.UserResponse;
 import ru.practicum.shareit.user.model.User;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UserMapper {
-    public static UserResponse mapToUserDto(User user) {
+    public static UserResponse mapToUserResponse(User user) {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setName(user.getName());
@@ -34,5 +35,13 @@ public final class UserMapper {
         user.setEmail(updateUserPatchRequest.getEmail());
 
         return user;
+    }
+
+    public static UserBookingResponse mapToUserBookingResponse(User user) {
+        UserBookingResponse userBookingResponse = new UserBookingResponse();
+
+        userBookingResponse.setId(user.getId());
+
+        return userBookingResponse;
     }
 }
