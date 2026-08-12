@@ -2,8 +2,8 @@ package ru.practicum.shareit.item.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.practicum.shareit.booking.dto.BookingItemResponse;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Setter
@@ -11,10 +11,8 @@ import java.util.Set;
 public class ItemBookingDateResponse {
     private Long id;
     private String name;
-    private LocalDateTime startLast;
-    private LocalDateTime endLast;
-    private LocalDateTime startNext;
-    private LocalDateTime endNext;
+    private BookingItemResponse lastBooking;
+    private BookingItemResponse nextBooking;
     private String description;
     private Boolean available;
     private Set<CommentResponse> comments;

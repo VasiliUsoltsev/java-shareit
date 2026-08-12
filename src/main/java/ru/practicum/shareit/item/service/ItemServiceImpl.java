@@ -45,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        // Собираем вещи владельца
+        // Собираем вещи владельца()
         List<Item> items = itemRepository.findByOwnerId(userId);
 
         // Собираем брони подходящие под условия
@@ -66,6 +66,7 @@ public class ItemServiceImpl implements ItemService {
                 .map(item -> {
                     Booking last = lastBookingMap.get(item.getId());
                     Booking next = nextBookingMap.get(item.getId());
+
                     return ItemMapper.mapToItemBookingDateResponse(item, last, next);
                 })
                 .collect(Collectors.toList());
@@ -73,11 +74,24 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public ItemResponse getItem(Long itemId) {
+    public ItemBookingDateResponse getItem(Long itemId, Long userId) {
         Item item = itemRepository.findByIdWithComments(itemId)
                 .orElseThrow(() -> new NotFoundException(ITEM_NOT_FOUND_EXCEPTION));
 
-        return ItemMapper.mapToItemResponse(item);
+        boolean isOwner = item.getOwner().getId().equals(userId);
+        LocalDateTime now = LocalDateTime.now();
+
+        Booking last = null;
+        Booking next = null;
+
+        if (isOwner) {
+            last = bookingRepository.findLastBookingByOwnerAndItem(userId, itemId, now)
+                    .orElse(null);
+            next = bookingRepository.findNextBookingByOwnerAndItem(userId, itemId, now)
+                    .orElse(null);
+        }
+
+        return ItemMapper.mapToItemBookingDateResponse(item, last, next);
     }
 
     @Override

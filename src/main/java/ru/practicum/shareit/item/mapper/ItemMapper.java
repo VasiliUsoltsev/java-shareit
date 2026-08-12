@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.mapper;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Item;
@@ -73,13 +74,11 @@ public final class ItemMapper {
         itemBookingResponse.setComments(commentResponse);
 
         if (last != null) {
-            itemBookingResponse.setStartLast(last.getStart());
-            itemBookingResponse.setEndLast(last.getEnd());
+            itemBookingResponse.setLastBooking(BookingMapper.mapToBookingItemResponse(last));
         }
 
         if (next != null) {
-            itemBookingResponse.setStartNext(next.getStart());
-            itemBookingResponse.setEndNext(next.getEnd());
+            itemBookingResponse.setNextBooking(BookingMapper.mapToBookingItemResponse(next));
         }
 
         return itemBookingResponse;

@@ -8,6 +8,7 @@ import ru.practicum.shareit.booking.model.Status;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     public List<Booking> findByBookerIdAndStatusOrderByStartDesc(Long bookerId, Status status);
@@ -51,9 +52,35 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b " +
             "WHERE b.item.owner.id = :ownerId " +
+            "AND b.item.id = :itemId " +
+            "AND b.end < :now " +
+            "AND b.end = (SELECT MAX(b2.end) FROM Booking b2 " +
+            "              WHERE b2.item.id = b.item.id " +
+            "              AND b2.end < :now)")
+    public Optional<Booking> findLastBookingByOwnerAndItem(
+            @Param("ownerId") Long ownerId,
+            @Param("itemId") Long itemId,
+            @Param("now") LocalDateTime now
+    );
+
+    @Query("SELECT b FROM Booking b " +
+            "WHERE b.item.owner.id = :ownerId " +
             "AND b.start > :now " +
             "AND b.start = (SELECT MIN(b2.start) FROM Booking b2 WHERE b2.item.id = b.item.id AND b2.start > :now)")
     public List<Booking> findAllNextBookingsByOwnerId(@Param("ownerId") Long ownerId, @Param("now") LocalDateTime now);
+
+    @Query("SELECT b FROM Booking b " +
+            "WHERE b.item.owner.id = :ownerId " +
+            "AND b.item.id = :itemId " +
+            "AND b.start > :now " +
+            "AND b.start = (SELECT MIN(b2.start) FROM Booking b2 " +
+            "              WHERE b2.item.id = b.item.id " +
+            "              AND b2.start > :now)")
+    Optional<Booking> findNextBookingByOwnerAndItem(
+            @Param("ownerId") Long ownerId,
+            @Param("itemId") Long itemId,
+            @Param("now") LocalDateTime now
+    );
 
     @Query("SELECT COUNT(b) > 0 FROM Booking b " +
             "WHERE b.booker.id = :userId " +

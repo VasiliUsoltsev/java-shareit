@@ -21,6 +21,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 import ru.practicum.shareit.user.storage.UserRepository;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -51,8 +52,8 @@ public class BookingServiceImpl implements BookingService {
 
         // Проверка корректности переданных дат
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime start = booking.getStart();
-        LocalDateTime end = booking.getEnd();
+        LocalDateTime start = booking.getStart().minus(Duration.ofSeconds(5));
+        LocalDateTime end = booking.getEnd().minus(Duration.ofSeconds(5));
 
         if (start.isBefore(now) || end.isBefore(now)) {
             throw new ValidationException(BOOKING_DATE_START_OR_END_IS_BEFORE_NOW_EXCEPTION);
@@ -89,11 +90,9 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException(BOOKING_NOT_FOUND_EXCEPTION));
 
-        Long bookerId = booking.getBooker().getId();
-        User booker = userRepository.findById(bookerId)
-                .orElseThrow(() -> new NotFoundException(UserServiceImpl.USER_NOT_FOUND_EXCEPTION));
+        Long ownerId = booking.getItem().getOwner().getId();
 
-        if (booker.getId().equals(userId)) {
+        if (ownerId.equals(userId)) {
             booking.setStatus(approve ? Status.APPROVED : Status.CANCELED);
         } else {
             throw new AccessDeniedException(BOOKING_ACCESS_APPROV_DENIED_EXCEPTION);

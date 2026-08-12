@@ -7,7 +7,7 @@ import java.util.Collection;
 public interface ItemService {
     public Collection<ItemBookingDateResponse> getAll(Long userId);
 
-    public ItemResponse getItem(Long itemId);
+    public ItemBookingDateResponse getItem(Long itemId, Long userId);
 
     public Collection<ItemResponse> searchItem(String text, Long userId);
 

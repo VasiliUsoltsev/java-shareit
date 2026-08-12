@@ -24,8 +24,10 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemResponse get(@PathVariable Long itemId) {
-        return itemService.getItem(itemId);
+    public ItemBookingDateResponse get(@PathVariable Long itemId,
+                                       @RequestHeader("X-Sharer-User-Id") Long userId
+    ) {
+        return itemService.getItem(itemId, userId);
     }
 
     @GetMapping("/search")
