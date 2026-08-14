@@ -13,4 +13,5 @@ public class NewItemRequest {
     @NotNull
     private Boolean available;
     private Integer ownerId;
+    private Long requestId;
 }

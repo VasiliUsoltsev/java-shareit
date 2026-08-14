@@ -15,6 +15,10 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.CommentRepository;
 import ru.practicum.shareit.item.storage.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.service.ItemRequestService;
+import ru.practicum.shareit.request.service.ItemRequestServiceImpl;
+import ru.practicum.shareit.request.storage.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 import ru.practicum.shareit.user.storage.UserRepository;
@@ -32,6 +36,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     public static final String ITEM_NOT_FOUND_EXCEPTION = "Вещь с данным идентификатором не найдена";
     private static final String ITEM_ACCESS_DENIED_EXCEPTION = "У пользователя нет прав редактировать данную вещь";
@@ -123,6 +128,14 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException(UserServiceImpl.USER_NOT_FOUND_EXCEPTION));
 
         item.setOwner(owner);
+
+        if (item.getRequest() != null) {
+            Long requestId = item.getRequest().getId();
+            ItemRequest itemRequest = itemRequestRepository.findById(requestId)
+                    .orElseThrow(() -> new NotFoundException(ItemRequestServiceImpl.ITEMREQUEST_NOT_FOUNT_EXCEPTION));
+
+            item.setRequest(itemRequest);
+        }
 
         itemRepository.save(item);
 

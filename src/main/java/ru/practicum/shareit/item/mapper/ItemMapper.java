@@ -6,6 +6,7 @@ import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.model.ItemRequest;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,6 +36,12 @@ public final class ItemMapper {
         item.setName(newItemRequest.getName());
         item.setDescription(newItemRequest.getDescription());
         item.setAvailable(newItemRequest.getAvailable());
+
+        if (newItemRequest.getRequestId() != null) {
+            ItemRequest itemRequest = new ItemRequest();
+            itemRequest.setId(newItemRequest.getRequestId());
+            item.setRequest(itemRequest);
+        }
 
         return item;
     }
@@ -82,5 +89,17 @@ public final class ItemMapper {
         }
 
         return itemBookingResponse;
+    }
+
+    public static ItemForItemRequestResponse mapToItemForItemRequestResponse(Item item) {
+        ItemForItemRequestResponse itemForItemRequestResponse = new ItemForItemRequestResponse();
+
+        itemForItemRequestResponse.setId(item.getId());
+        itemForItemRequestResponse.setName(item.getName());
+        itemForItemRequestResponse.setDescription(item.getDescription());
+        itemForItemRequestResponse.setAvailable(item.getAvailable());
+        itemForItemRequestResponse.setOwnerId(item.getOwner().getId());
+
+        return itemForItemRequestResponse;
     }
 }
