@@ -5,10 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.AccessDeniedException;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.item.ItemMapper;
+import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.dto.NewItemRequest;
 import ru.practicum.shareit.item.dto.UpdateItemPatchRequest;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.Collection;
@@ -27,7 +28,7 @@ public class InMemoryItemStorage implements ItemStorage {
     private static final String ITEM_ACCESS_DENIED_EXCEPTION = "У пользователя нет прав редактировать данную вещь";
 
     @Override
-    public Item createItem(NewItemRequest newItemRequest, Integer userId) {
+    public Item createItem(NewItemRequest newItemRequest, Long userId) {
         log.debug("Мы получили на вход - " + newItemRequest);
         Item item = ItemMapper.mapToItem(newItemRequest);
 
@@ -37,7 +38,9 @@ public class InMemoryItemStorage implements ItemStorage {
         if (!userStorage.existsById(userId)) {
             throw new NotFoundException(USER_NOT_FOUND_EXCEPTION);
         }
-        item.setOwnerId(userId);
+
+        User owner = userStorage.getUserModel(userId);
+        item.setOwner(owner);
 
         items.put(itemId, item);
 
@@ -47,7 +50,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Item updateItem(Long itemId, UpdateItemPatchRequest updateItemRequest, Integer userId) {
+    public Item updateItem(Long itemId, UpdateItemPatchRequest updateItemRequest, Long userId) {
         Item updateItem = ItemMapper.mapToItem(updateItemRequest);
 
         updateItem.setId(itemId);
@@ -59,7 +62,7 @@ public class InMemoryItemStorage implements ItemStorage {
                 throw new NotFoundException(USER_NOT_FOUND_EXCEPTION);
             }
 
-            if (!oldItem.getOwnerId().equals(userId)) {
+            if (!oldItem.getOwner().getId().equals(userId)) {
                 throw new AccessDeniedException(ITEM_ACCESS_DENIED_EXCEPTION);
             }
 
@@ -83,7 +86,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public void removeItem(Long itemId, Integer userId) {
+    public void removeItem(Long itemId, Long userId) {
         Item item = items.get(itemId);
 
         if (item != null) {
@@ -91,7 +94,7 @@ public class InMemoryItemStorage implements ItemStorage {
                 throw new NotFoundException(USER_NOT_FOUND_EXCEPTION);
             }
 
-            if (!item.getOwnerId().equals(userId)) {
+            if (!item.getOwner().getId().equals(userId)) {
                 throw new AccessDeniedException(ITEM_ACCESS_DENIED_EXCEPTION);
             }
 
@@ -100,18 +103,17 @@ public class InMemoryItemStorage implements ItemStorage {
         } else {
             throw new NotFoundException(ITEM_NOT_FOUND_EXCEPTION);
         }
-
     }
 
     @Override
-    public Collection<Item> getAll(Integer userId) {
+    public Collection<Item> getAll(Long userId) {
         if (!userStorage.existsById(userId)) {
             throw new NotFoundException(USER_NOT_FOUND_EXCEPTION);
         }
 
         return items.values()
                 .stream()
-                .filter(item -> item.getOwnerId().equals(userId))
+                .filter(item -> item.getOwner().getId().equals(userId))
                 .toList();
     }
 
@@ -122,7 +124,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Collection<Item> searchItem(String textSearch, Integer userId) {
+    public Collection<Item> searchItem(String textSearch, Long userId) {
         if (!userStorage.existsById(userId)) {
             throw new NotFoundException(USER_NOT_FOUND_EXCEPTION);
         }

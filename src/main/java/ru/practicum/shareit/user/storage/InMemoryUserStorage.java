@@ -17,7 +17,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class InMemoryUserStorage implements UserStorage {
-    private final Map<Integer, User> users;
+    private final Map<Long, User> users;
 
     private static final String DUBLICATE_EMAIL_EXCEPTION = "Пользователь с таким email уже существует";
 
@@ -31,7 +31,7 @@ public class InMemoryUserStorage implements UserStorage {
             throw new DuplicateDataException(DUBLICATE_EMAIL_EXCEPTION);
         }
 
-        int userId = getNextId();
+        long userId = getNextId();
 
         user.setId(userId);
 
@@ -39,11 +39,11 @@ public class InMemoryUserStorage implements UserStorage {
 
         log.debug("Внесли пользователя {}", user);
 
-        return UserMapper.mapToUserDto(user);
+        return UserMapper.mapToUserResponse(user);
     }
 
     @Override
-    public UserResponse updateUser(Integer userId, UpdateUserPatchRequest updateUserPatchRequest) {
+    public UserResponse updateUser(Long userId, UpdateUserPatchRequest updateUserPatchRequest) {
         User updateUser = UserMapper.mapToUser(updateUserPatchRequest);
 
         User oldUser = users.get(userId);
@@ -63,11 +63,11 @@ public class InMemoryUserStorage implements UserStorage {
             oldUser.setEmail(updateUser.getEmail());
         }
 
-        return UserMapper.mapToUserDto(oldUser);
+        return UserMapper.mapToUserResponse(oldUser);
     }
 
     @Override
-    public void removeUser(Integer removeUserId) {
+    public void removeUser(Long removeUserId) {
         users.remove(removeUserId);
     }
 
@@ -75,32 +75,32 @@ public class InMemoryUserStorage implements UserStorage {
     public Collection<UserResponse> getAll() {
         return users.values()
                 .stream()
-                .map(UserMapper::mapToUserDto)
+                .map(UserMapper::mapToUserResponse)
                 .toList();
     }
 
     @Override
-    public UserResponse getUser(Integer userId) {
+    public UserResponse getUser(Long userId) {
         User user = getUserModel(userId);
 
-        return UserMapper.mapToUserDto(user);
+        return UserMapper.mapToUserResponse(user);
     }
 
     @Override
-    public User getUserModel(Integer userId) {
+    public User getUserModel(Long userId) {
         return users.get(userId);
     }
 
     @Override
-    public boolean existsById(Integer userId) {
+    public boolean existsById(Long userId) {
         return users.containsKey(userId);
     }
 
     // Генерация идетификатора пользователя
-    private Integer getNextId() {
-        Integer currentMaxId = users.keySet()
+    private Long getNextId() {
+        Long currentMaxId = users.keySet()
                 .stream()
-                .mapToInt(id -> id)
+                .mapToLong(id -> id)
                 .max()
                 .orElse(0);
         return ++currentMaxId;
