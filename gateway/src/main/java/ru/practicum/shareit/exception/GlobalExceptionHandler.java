@@ -13,18 +13,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidationException(final MethodArgumentNotValidException e) {
-        return Map.of("Ошибка валидации", e.getMessage());
-    }
+        String errorMessage = e.getBindingResult()
+                .getFieldErrors()
+                .get(0)
+                .getDefaultMessage();
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleIIllegalArgumentException(final IllegalArgumentException e) {
-        return Map.of("Ошибка валидации", e.getMessage());
+        return Map.of("error", errorMessage);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidationException(final ValidationException e) {
-        return Map.of("Ошибка валидации", e.getMessage());
+        return Map.of("error", e.getMessage());
     }
 }

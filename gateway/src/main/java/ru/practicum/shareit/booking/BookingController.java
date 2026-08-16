@@ -31,7 +31,7 @@ public class BookingController {
                                                          @RequestParam(defaultValue = "ALL") String state
     ) {
         StatusRequest stateParam = StatusRequest.from(state)
-                .orElseThrow(() -> new IllegalArgumentException("Неопознанный state"));
+                .orElseThrow(() -> new ValidationException("Неопознанный state"));
 
         return bookingClient.getBookingAllForBooker(userId, stateParam);
     }
@@ -41,7 +41,7 @@ public class BookingController {
                                                         @RequestParam(defaultValue = "ALL") String state
     ) {
         StatusRequest stateParam = StatusRequest.from(state)
-                .orElseThrow(() -> new IllegalArgumentException("Неопознанный state"));
+                .orElseThrow(() -> new ValidationException("Неопознанный state"));
 
         return bookingClient.getBookingAllForOwner(userId, stateParam);
     }

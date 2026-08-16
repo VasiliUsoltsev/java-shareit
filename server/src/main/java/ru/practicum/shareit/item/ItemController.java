@@ -59,7 +59,6 @@ public class ItemController {
                                @PathVariable Long itemId,
                                @RequestHeader("X-Sharer-User-Id") Long userId
     ) {
-        log.debug("Пришел запрос на апдейт");
         return itemService.updateItem(itemId, updateItem, userId);
     }
 
