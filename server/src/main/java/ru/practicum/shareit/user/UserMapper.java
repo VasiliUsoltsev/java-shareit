@@ -13,6 +13,10 @@ import ru.practicum.shareit.user.model.User;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UserMapper {
     public static UserResponse mapToUserResponse(User user) {
+        if (user == null) {
+            return null;
+        }
+
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setName(user.getName());
@@ -22,6 +26,10 @@ public final class UserMapper {
     }
 
     public static User mapToUser(NewUserRequest newUserRequest) {
+        if (newUserRequest == null) {
+            return null;
+        }
+
         User user = new User();
         user.setName(newUserRequest.getName());
         user.setEmail(newUserRequest.getEmail());
@@ -30,6 +38,10 @@ public final class UserMapper {
     }
 
     public static User mapToUser(UpdateUserPatchRequest updateUserPatchRequest) {
+        if (updateUserPatchRequest == null) {
+            return null;
+        }
+
         User user = new User();
         user.setName(updateUserPatchRequest.getName());
         user.setEmail(updateUserPatchRequest.getEmail());
@@ -38,6 +50,10 @@ public final class UserMapper {
     }
 
     public static UserBookingResponse mapToUserBookingResponse(User user) {
+        if (user == null) {
+            return null;
+        }
+
         UserBookingResponse userBookingResponse = new UserBookingResponse();
 
         userBookingResponse.setId(user.getId());
