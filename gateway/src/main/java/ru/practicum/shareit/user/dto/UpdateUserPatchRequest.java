@@ -8,7 +8,6 @@ import lombok.Data;
 public class UpdateUserPatchRequest {
     private String name;
 
-    @NotBlank(message = "Email  не может быть пустым")
     @Email(message = "Email пользователя некорректный")
     private String email;
 }

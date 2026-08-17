@@ -42,45 +42,6 @@ class UpdateUserPatchRequestTest {
     }
 
     @Test
-    void shouldFailWhenEmailIsNull() {
-        UpdateUserPatchRequest request = new UpdateUserPatchRequest();
-        request.setEmail(null);
-
-        Set<ConstraintViolation<UpdateUserPatchRequest>> violations = validator.validate(request);
-        assertThat(violations).isNotEmpty();
-        assertThat(violations).extracting(v -> v.getPropertyPath().toString())
-                .contains("email");
-        assertThat(violations).extracting(ConstraintViolation::getMessage)
-                .contains("Email  не может быть пустым");
-    }
-
-    @Test
-    void shouldFailWhenEmailIsEmpty() {
-        UpdateUserPatchRequest request = new UpdateUserPatchRequest();
-        request.setEmail("");
-
-        Set<ConstraintViolation<UpdateUserPatchRequest>> violations = validator.validate(request);
-        assertThat(violations).isNotEmpty();
-        assertThat(violations).extracting(v -> v.getPropertyPath().toString())
-                .contains("email");
-        assertThat(violations).extracting(ConstraintViolation::getMessage)
-                .contains("Email  не может быть пустым");
-    }
-
-    @Test
-    void shouldFailWhenEmailIsBlank() {
-        UpdateUserPatchRequest request = new UpdateUserPatchRequest();
-        request.setEmail("   ");
-
-        Set<ConstraintViolation<UpdateUserPatchRequest>> violations = validator.validate(request);
-        assertThat(violations).isNotEmpty();
-        assertThat(violations).extracting(v -> v.getPropertyPath().toString())
-                .contains("email");
-        assertThat(violations).extracting(ConstraintViolation::getMessage)
-                .contains("Email  не может быть пустым");
-    }
-
-    @Test
     void shouldFailWhenEmailIsInvalidWithoutAt() {
         UpdateUserPatchRequest request = new UpdateUserPatchRequest();
         request.setEmail("annamail.ru");
