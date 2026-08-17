@@ -13,10 +13,11 @@ import ru.practicum.shareit.user.UserMapper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BookingMapper {
     public static BookingResponse mapToBookingResponse(Booking booking) {
+        System.out.println("1-----------------" + booking);
         if (booking == null) {
             return null;
         }
-
+        System.out.println("2----------------" + booking);
         BookingResponse bookingResponse = new BookingResponse();
 
         bookingResponse.setId(booking.getId());
