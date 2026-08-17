@@ -9,6 +9,10 @@ import ru.practicum.shareit.item.model.Comment;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CommentMapper {
     public static Comment mapToComment(NewCommentRequest newCommentRequest) {
+        if (newCommentRequest == null) {
+            return null;
+        }
+
         Comment comment = new Comment();
 
         comment.setText(newCommentRequest.getText());
@@ -17,11 +21,19 @@ public final class CommentMapper {
     }
 
     public static CommentResponse mapToCommentResponse(Comment comment) {
+        if (comment == null) {
+            return null;
+        }
+
         CommentResponse commentResponse = new CommentResponse();
 
         commentResponse.setId(comment.getId());
         commentResponse.setText(comment.getText());
-        commentResponse.setAuthorName(comment.getAuthor().getName());
+
+        if (comment.getAuthor() != null) {
+            commentResponse.setAuthorName(comment.getAuthor().getName());
+        }
+
         commentResponse.setCreated(comment.getCreated());
 
         return commentResponse;

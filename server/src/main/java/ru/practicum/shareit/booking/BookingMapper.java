@@ -13,19 +13,31 @@ import ru.practicum.shareit.user.UserMapper;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BookingMapper {
     public static BookingResponse mapToBookingResponse(Booking booking) {
+        if (booking == null) {
+            return null;
+        }
+
         BookingResponse bookingResponse = new BookingResponse();
 
         bookingResponse.setId(booking.getId());
         bookingResponse.setStart(booking.getStart());
         bookingResponse.setEnd(booking.getEnd());
         bookingResponse.setStatus(booking.getStatus());
-        bookingResponse.setBooker(UserMapper.mapToUserBookingResponse(booking.getBooker()));
+
+        if (booking.getBooker() != null) {
+            bookingResponse.setBooker(UserMapper.mapToUserBookingResponse(booking.getBooker()));
+        }
+
         bookingResponse.setItem(ItemMapper.mapToItemBookingResponse(booking.getItem()));
 
         return bookingResponse;
     }
 
     public static Booking mapToBooking(NewBookingRequest newBookingRequest) {
+        if (newBookingRequest == null) {
+            return null;
+        }
+
         Booking booking = new Booking();
 
         booking.setStart(newBookingRequest.getStart());
@@ -40,13 +52,20 @@ public final class BookingMapper {
     }
 
     public static BookingItemResponse mapToBookingItemResponse(Booking booking) {
+        if (booking == null) {
+            return null;
+        }
+
         BookingItemResponse bookingItemResponse = new BookingItemResponse();
 
         bookingItemResponse.setId(booking.getId());
         bookingItemResponse.setStart(booking.getStart());
         bookingItemResponse.setEnd(booking.getEnd());
         bookingItemResponse.setStatus(booking.getStatus());
-        bookingItemResponse.setBookerId(booking.getBooker().getId());
+
+        if (booking.getBooker() != null) {
+            bookingItemResponse.setBookerId(booking.getBooker().getId());
+        }
 
         return bookingItemResponse;
     }

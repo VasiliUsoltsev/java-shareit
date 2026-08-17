@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemMapper {
     public static ItemResponse mapToItemResponse(Item item) {
+        if (item == null) {
+            return null;
+        }
+
         ItemResponse itemResponse = new ItemResponse();
 
         itemResponse.setId(item.getId());
@@ -31,6 +35,9 @@ public final class ItemMapper {
     }
 
     public static Item mapToItem(NewItemRequest newItemRequest) {
+        if (newItemRequest == null) {
+            return null;
+        }
         Item item = new Item();
 
         item.setName(newItemRequest.getName());
@@ -47,6 +54,10 @@ public final class ItemMapper {
     }
 
     public static Item mapToItem(UpdateItemPatchRequest updateItemRequest) {
+        if (updateItemRequest == null) {
+            return null;
+        }
+
         Item item = new Item();
 
         item.setName(updateItemRequest.getName());
@@ -57,6 +68,10 @@ public final class ItemMapper {
     }
 
     public static ItemBookingResponse mapToItemBookingResponse(Item item) {
+        if (item == null) {
+            return null;
+        }
+
         ItemBookingResponse itemBookingResponse = new ItemBookingResponse();
 
         itemBookingResponse.setId(item.getId());
@@ -66,6 +81,10 @@ public final class ItemMapper {
     }
 
     public static ItemBookingDateResponse mapToItemBookingDateResponse(Item item, Booking last, Booking next) {
+        if (item == null) {
+            return null;
+        }
+
         ItemBookingDateResponse itemBookingResponse = new ItemBookingDateResponse();
 
         itemBookingResponse.setId(item.getId());
@@ -92,6 +111,10 @@ public final class ItemMapper {
     }
 
     public static ItemForItemRequestResponse mapToItemForItemRequestResponse(Item item) {
+        if (item == null) {
+            return null;
+        }
+
         ItemForItemRequestResponse itemForItemRequestResponse = new ItemForItemRequestResponse();
 
         itemForItemRequestResponse.setId(item.getId());

@@ -14,6 +14,10 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemRequestMapper {
     public static ItemRequestBaseResponse mapToItemRequestBaseResponse(ItemRequest itemRequest) {
+        if (itemRequest == null) {
+            return null;
+        }
+
         ItemRequestBaseResponse itemRequestBaseResponse = new ItemRequestBaseResponse();
 
         itemRequestBaseResponse.setId(itemRequest.getId());
@@ -24,6 +28,9 @@ public final class ItemRequestMapper {
     }
 
     public static ItemRequest mapToItemRequest(NewItemRequest newItemRequest) {
+        if (newItemRequest == null) {
+            return null;
+        }
         ItemRequest itemRequest = new ItemRequest();
 
         itemRequest.setDescription(newItemRequest.getDescription());
@@ -32,18 +39,24 @@ public final class ItemRequestMapper {
     }
 
     public static ItemRequestWithAnswersResponse mapToItemRequestWithAnswersResponse(ItemRequest itemRequest) {
+        if (itemRequest == null) {
+            return null;
+        }
+
         ItemRequestWithAnswersResponse itemRequestWithAnswersResponse = new ItemRequestWithAnswersResponse();
 
         itemRequestWithAnswersResponse.setId(itemRequest.getId());
         itemRequestWithAnswersResponse.setDescription(itemRequest.getDescription());
         itemRequestWithAnswersResponse.setCreated(itemRequest.getCreated());
 
-        List<ItemForItemRequestResponse> items = itemRequest.getItems()
-                .stream()
-                .map(ItemMapper::mapToItemForItemRequestResponse)
-                .toList();
+        if (itemRequest.getItems() != null) {
+            List<ItemForItemRequestResponse> items = itemRequest.getItems()
+                    .stream()
+                    .map(ItemMapper::mapToItemForItemRequestResponse)
+                    .toList();
 
-        itemRequestWithAnswersResponse.setItems(items);
+            itemRequestWithAnswersResponse.setItems(items);
+        }
 
         return itemRequestWithAnswersResponse;
     }
