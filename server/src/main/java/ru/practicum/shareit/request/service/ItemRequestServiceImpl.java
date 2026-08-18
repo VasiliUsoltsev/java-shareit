@@ -17,6 +17,7 @@ import ru.practicum.shareit.user.storage.UserRepository;
 import java.util.Collection;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
